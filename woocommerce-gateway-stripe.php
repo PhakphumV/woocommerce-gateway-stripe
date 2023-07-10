@@ -396,6 +396,7 @@ function woocommerce_gateway_stripe() {
 				// These payment gateways will always be visible, regardless if UPE is enabled or disabled:
 				$methods[] = WC_Gateway_Stripe_Alipay::class;
 				$methods[] = WC_Gateway_Stripe_Multibanco::class;
+				$methods[] = WC_Gateway_Stripe_PromptPay::class;
 
 				return $methods;
 			}
