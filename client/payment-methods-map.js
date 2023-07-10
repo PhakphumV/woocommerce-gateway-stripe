@@ -144,6 +144,19 @@ export default {
 		],
 		capability: undefined,
 	},
+	promptpay: {
+		id: 'promptpay',
+		label: __( 'PromptPay', 'woocommerce-gateway-stripe' ),
+		description: __(
+			'PromptPay is a Thailand based payment method that allows customers to make a payment using their preferred app from participating banks.',
+			'woocommerce-gateway-stripe'
+		),
+		Icon: () => null,
+		currencies: [
+			'THB',
+		],
+		capability: undefined,
+	},
 	multibanco: {
 		id: 'multibanco',
 		label: __( 'Multibanco', 'woocommerce-gateway-stripe' ),
