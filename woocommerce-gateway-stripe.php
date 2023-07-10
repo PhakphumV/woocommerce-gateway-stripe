@@ -421,6 +421,7 @@ function woocommerce_gateway_stripe() {
 				unset( $sections['stripe_alipay'] );
 				unset( $sections['stripe_sepa'] );
 				unset( $sections['stripe_multibanco'] );
+				unset( $sections['stripe_promptpay'] );
 
 				$sections['stripe'] = 'Stripe';
 				if ( WC_Stripe_Feature_Flags::is_upe_preview_enabled() ) {
@@ -435,6 +436,7 @@ function woocommerce_gateway_stripe() {
 				$sections['stripe_alipay']     = __( 'Stripe Alipay', 'woocommerce-gateway-stripe' );
 				$sections['stripe_sepa']       = __( 'Stripe SEPA Direct Debit', 'woocommerce-gateway-stripe' );
 				$sections['stripe_multibanco'] = __( 'Stripe Multibanco', 'woocommerce-gateway-stripe' );
+				$sections['stripe_promptpay']     = __( 'Stripe PromptPay', 'woocommerce-gateway-stripe' );
 
 				return $sections;
 			}
