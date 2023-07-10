@@ -31,6 +31,7 @@ if ( defined( 'WC_REMOVE_ALL_DATA' ) && true === WC_REMOVE_ALL_DATA ) {
 	delete_option( 'wc_stripe_show_p24_notice' );
 	delete_option( 'wc_stripe_show_sepa_notice' );
 	delete_option( 'wc_stripe_show_sofort_notice' );
+	delete_option( 'wc_stripe_show_promptpay_notice' );
 	delete_option( 'wc_stripe_version' );
 	delete_option( 'woocommerce_stripe_bancontact_settings' );
 	delete_option( 'woocommerce_stripe_alipay_settings' );
@@ -40,4 +41,5 @@ if ( defined( 'WC_REMOVE_ALL_DATA' ) && true === WC_REMOVE_ALL_DATA ) {
 	delete_option( 'woocommerce_stripe_giropay_settings' );
 	delete_option( 'woocommerce_stripe_sepa_settings' );
 	delete_option( 'woocommerce_stripe_sofort_settings' );
+	delete_option( 'woocommerce_stripe_promptpay_settings' );
 }

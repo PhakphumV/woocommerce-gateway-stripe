@@ -1,14 +1,16 @@
 <?php
+
 /**
  * Class WC_REST_Stripe_Payment_Gateway_Controller
  */
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  * Dynamic REST controller for payment gateway settings.
  */
-class WC_REST_Stripe_Payment_Gateway_Controller extends WC_Stripe_REST_Base_Controller {
+class WC_REST_Stripe_Payment_Gateway_Controller extends WC_Stripe_REST_Base_Controller
+{
 
 	/**
 	 * Endpoint path.
@@ -41,6 +43,7 @@ class WC_REST_Stripe_Payment_Gateway_Controller extends WC_Stripe_REST_Base_Cont
 		'stripe_multibanco' => WC_Gateway_Stripe_Multibanco::class,
 		'stripe_oxxo'       => WC_Gateway_Stripe_Oxxo::class,
 		'stripe_boleto'     => WC_Gateway_Stripe_Boleto::class,
+		'stripe_promptpay'     => WC_Gateway_Stripe_PromptPay::class,
 	];
 
 	/**
@@ -48,21 +51,23 @@ class WC_REST_Stripe_Payment_Gateway_Controller extends WC_Stripe_REST_Base_Cont
 	 *
 	 * @return void
 	 */
-	private function instantiate_gateway( $gateway_id ) {
-		$this->gateway = new $this->gateways[ $gateway_id ]();
+	private function instantiate_gateway($gateway_id)
+	{
+		$this->gateway = new $this->gateways[$gateway_id]();
 	}
 
 	/**
 	 * Configure REST API routes.
 	 */
-	public function register_routes() {
+	public function register_routes()
+	{
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base . '/(?P<payment_gateway_id>[a-z0-9_]+)',
 			[
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => [ $this, 'get_payment_gateway_settings' ],
-				'permission_callback' => [ $this, 'check_permission' ],
+				'callback'            => [$this, 'get_payment_gateway_settings'],
+				'permission_callback' => [$this, 'check_permission'],
 			]
 		);
 		register_rest_route(
@@ -70,8 +75,8 @@ class WC_REST_Stripe_Payment_Gateway_Controller extends WC_Stripe_REST_Base_Cont
 			'/' . $this->rest_base . '/(?P<payment_gateway_id>[a-z0-9_]+)',
 			[
 				'methods'             => WP_REST_Server::EDITABLE,
-				'callback'            => [ $this, 'update_payment_gateway_settings' ],
-				'permission_callback' => [ $this, 'check_permission' ],
+				'callback'            => [$this, 'update_payment_gateway_settings'],
+				'permission_callback' => [$this, 'check_permission'],
 			]
 		);
 	}
@@ -82,21 +87,22 @@ class WC_REST_Stripe_Payment_Gateway_Controller extends WC_Stripe_REST_Base_Cont
 	 * @param WP_REST_Request $request
 	 * @return WP_REST_Response
 	 */
-	public function get_payment_gateway_settings( $request = null ) {
+	public function get_payment_gateway_settings($request = null)
+	{
 		try {
-			$id = $request->get_param( 'payment_gateway_id' );
-			$this->instantiate_gateway( $id );
+			$id = $request->get_param('payment_gateway_id');
+			$this->instantiate_gateway($id);
 			$settings = [
 				'is_' . $id . '_enabled' => $this->gateway->is_enabled(),
-				$id . '_name'            => $this->gateway->get_option( 'title' ),
-				$id . '_description'     => $this->gateway->get_option( 'description' ),
+				$id . '_name'            => $this->gateway->get_option('title'),
+				$id . '_description'     => $this->gateway->get_option('description'),
 			];
-			if ( method_exists( $this->gateway, 'get_unique_settings' ) ) {
-				$settings = $this->gateway->get_unique_settings( $settings );
+			if (method_exists($this->gateway, 'get_unique_settings')) {
+				$settings = $this->gateway->get_unique_settings($settings);
 			}
-			return new WP_REST_Response( $settings );
-		} catch ( Exception $exception ) {
-			return new WP_REST_Response( [ 'result' => 'bad_request' ], 400 );
+			return new WP_REST_Response($settings);
+		} catch (Exception $exception) {
+			return new WP_REST_Response(['result' => 'bad_request'], 400);
 		}
 	}
 
@@ -105,19 +111,20 @@ class WC_REST_Stripe_Payment_Gateway_Controller extends WC_Stripe_REST_Base_Cont
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 */
-	public function update_payment_gateway_settings( WP_REST_Request $request ) {
+	public function update_payment_gateway_settings(WP_REST_Request $request)
+	{
 		try {
-			$id = $request->get_param( 'payment_gateway_id' );
-			$this->instantiate_gateway( $id );
-			$this->update_is_gateway_enabled( $request );
-			$this->update_gateway_name( $request );
-			$this->update_gateway_description( $request );
-			if ( method_exists( $this->gateway, 'update_unique_settings' ) ) {
-				$this->gateway->update_unique_settings( $request );
+			$id = $request->get_param('payment_gateway_id');
+			$this->instantiate_gateway($id);
+			$this->update_is_gateway_enabled($request);
+			$this->update_gateway_name($request);
+			$this->update_gateway_description($request);
+			if (method_exists($this->gateway, 'update_unique_settings')) {
+				$this->gateway->update_unique_settings($request);
 			}
-			return new WP_REST_Response( [], 200 );
-		} catch ( Exception $exception ) {
-			return new WP_REST_Response( [ 'result' => 'bad_request' ], 400 );
+			return new WP_REST_Response([], 200);
+		} catch (Exception $exception) {
+			return new WP_REST_Response(['result' => 'bad_request'], 400);
 		}
 	}
 
@@ -126,15 +133,16 @@ class WC_REST_Stripe_Payment_Gateway_Controller extends WC_Stripe_REST_Base_Cont
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 */
-	private function update_is_gateway_enabled( WP_REST_Request $request ) {
+	private function update_is_gateway_enabled(WP_REST_Request $request)
+	{
 		$field_name = 'is_' . $this->gateway->id . '_enabled';
-		$is_enabled = $request->get_param( $field_name );
+		$is_enabled = $request->get_param($field_name);
 
-		if ( null === $is_enabled || ! is_bool( $is_enabled ) ) {
+		if (null === $is_enabled || !is_bool($is_enabled)) {
 			return;
 		}
 
-		if ( $is_enabled ) {
+		if ($is_enabled) {
 			$this->gateway->enable();
 		} else {
 			$this->gateway->disable();
@@ -146,16 +154,17 @@ class WC_REST_Stripe_Payment_Gateway_Controller extends WC_Stripe_REST_Base_Cont
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 */
-	private function update_gateway_name( WP_REST_Request $request ) {
+	private function update_gateway_name(WP_REST_Request $request)
+	{
 		$field_name = $this->gateway->id . '_name';
-		$name       = $request->get_param( $field_name );
+		$name       = $request->get_param($field_name);
 
-		if ( null === $name ) {
+		if (null === $name) {
 			return;
 		}
 
-		$value = sanitize_text_field( $name );
-		$this->gateway->update_option( 'title', $value );
+		$value = sanitize_text_field($name);
+		$this->gateway->update_option('title', $value);
 	}
 
 	/**
@@ -163,15 +172,16 @@ class WC_REST_Stripe_Payment_Gateway_Controller extends WC_Stripe_REST_Base_Cont
 	 *
 	 * @param WP_REST_Request $request Request object.
 	 */
-	private function update_gateway_description( WP_REST_Request $request ) {
+	private function update_gateway_description(WP_REST_Request $request)
+	{
 		$field_name  = $this->gateway->id . '_description';
-		$description = $request->get_param( $field_name );
+		$description = $request->get_param($field_name);
 
-		if ( null === $description ) {
+		if (null === $description) {
 			return;
 		}
 
-		$value = sanitize_text_field( $description );
-		$this->gateway->update_option( 'description', $value );
+		$value = sanitize_text_field($description);
+		$this->gateway->update_option('description', $value);
 	}
 }

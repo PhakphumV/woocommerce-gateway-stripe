@@ -100,6 +100,7 @@ class WC_Stripe_Admin_Notices {
 			'sofort'     => 'WC_Gateway_Stripe_Sofort',
 			'boleto'     => 'WC_Gateway_Stripe_Boleto',
 			'oxxo'       => 'WC_Gateway_Stripe_Oxxo',
+			'promptpay'     => 'WC_Gateway_Stripe_PromptPay',
 		];
 	}
 
