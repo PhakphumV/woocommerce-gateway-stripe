@@ -67,6 +67,11 @@
 	max-width: 50px;
 }
 
+.woocommerce-checkout #payment ul.payment_methods li img.stripe-promptpay-icon,
+#add_payment_method #payment ul.payment_methods li img.stripe-promptpay-icon {
+	max-width: 50px;
+}
+
 .woocommerce-checkout #payment ul.payment_methods li .stripe-credit-card-brand,
 #add_payment_method #payment ul.payment_methods li .stripe-credit-card-brand {
 	position: absolute;
